@@ -7,7 +7,8 @@ import {
   Text,
   StatusBar,
   Image,
-  Pressable
+  Pressable,
+  ImageBackground
 } from 'react-native';
 
 // import { useNavigation } from '@react-navigation/native';
@@ -32,9 +33,13 @@ const DATA = [
   },
 ];
 
-const Item = ({title}) => (
+const Item = ({title, bestScore, image}) => (
   <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
+    <Image source={image} style={styles.itemImage}/>
+    <View style={styles.itemInfo}>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.score}>Лучший счет: {bestScore}</Text>
+    </View>
   </View>
 );
 
@@ -44,61 +49,106 @@ const LogoSection = () => (
   </View>
 );
 
+const ResetSection = ({setBestScore}) => (
+  <View style={styles.resetContainer}>
+    <Pressable 
+      onPress={()=> setBestScore({
+        slow: 0,
+        middle: 0,
+        fast: 0
+      })}
+      style={styles.button}
+    >
+      <Text style={styles.resetText}>Обнулить счет</Text>
+    </Pressable>
+  </View>
+);
 
-// const HomeScreen = () => {
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <FlatList
-//         data={DATA}
-//         renderItem={({item}) => <Item title={item.title} />}
-//         keyExtractor={item => item.id}
-//       />
-//     </SafeAreaView>
-//   );
-// };
-
-const HomeScreen = ({ setDifficulty, navigation }) => {
-  // const {navigation} = useNavigation();
+const HomeScreen = ({ setDifficulty, navigation, bestScore, setBestScore }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LogoSection />
-      <FlatList
-        data={DATA}
-        renderItem={({item}) => (
-          <Pressable onPress={()=> {
-            setDifficulty(item.type);
-            navigation.navigate('Bufet run')
-          }}>
-            <Item title={item.title} />
-          </Pressable>
-        )}
-        keyExtractor={item => item.id}
-      />
+      <ImageBackground source={images.homeBackground} resizeMode="cover" style={styles.homeBackground}>
+        <LogoSection />
+        <FlatList
+          data={DATA}
+          renderItem={({item}) => (
+            <Pressable onPress={()=> {
+              setDifficulty(item.type);
+              navigation.navigate('Bufet run')
+            }}>
+              <Item title={item.title} bestScore={bestScore[item.type]} image={images[item.type]}/>
+            </Pressable>
+          )}
+          keyExtractor={item => item.id}
+        />
+        <ResetSection setBestScore={setBestScore}/>
+      </ImageBackground>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  homeBackground: {
+    flex: 1,
+  },
   logoContainer: {
     margin: 10,
+    marginTop:30,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
   },
+  resetContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: 20
+  },
+  resetText: {
+    fontSize: 20,
+    color: '#FF5A21'
+  },
+  itemImage: {
+    margin: 10,
+    height: 100,
+    width: 100
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFFFF',
-    marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
+    backgroundColor: 'rgba(240,234,214, 0.7)',
+    padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
+    borderRadius: 20,
+    boxShadow: '0px 10px 20px 5px rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  itemInfo: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginLeft: 10
   },
   title: {
     fontSize: 32,
+    color: '#FF5A21'
+  },
+  score: {
+    fontSize: 20,
+    color: '#FF5A21'
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 420,
+    elevation: 3,
+    backgroundColor: 'rgba(240,234,214, 0.7)',
+    boxShadow: '0px 10px 20px 5px rgba(0, 0, 0, 0.5)',
   },
 });
 

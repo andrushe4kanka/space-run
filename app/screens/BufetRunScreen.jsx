@@ -1,64 +1,23 @@
 import React, { useEffect } from 'react';
 import {
-  SafeAreaView,
   View,
-  FlatList,
   StyleSheet,
   Text,
-  StatusBar,
   ImageBackground,
-  Image,
-  Easing,
-  Animated,
   Dimensions,
   TouchableWithoutFeedback
 } from 'react-native';
-import { Video, ResizeMode } from 'expo-av';
 
-import { images, videos, sounds } from '../utils/constants';
-import useGameState from '../components/RegularGameScreen/useGameState';
-import AnimatedImage from '../components/RegularGameScreen/AnimatedImage';
+import { images, videos, sounds, videoSpeed, spawnTimeout } from '../utils/constants';
+import useGameState from '../hooks/useGameState';
+import AnimatedImage from '../components/AnimatedImage';
 import Stats from '../components/Stats';
-import useAudio from '../hooks/useAudio';
-// import useGameState from '../components/PerspectiveGameScreen/useGameState';
-// import AnimatedImage from '../components/PerspectiveGameScreen/AnimatedImage';
+import VideoBackground from '../components/VideoBackground';
+import PlayAudio from '../components/PlayAudio';
 
 const { height, width } = Dimensions.get('window');
 
-const VideoBackground = ({play, url, rate}) => {
-  const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
-
-  useEffect(()=>{
-    video?.current && video.current.setRateAsync(rate)
-  },[rate])
-
-  return (
-    <Video
-      ref={video}
-      source={url}
-      style={styles.backgroundVideo}
-      shouldPlay={play}
-      rate={1}
-      // muted={true}
-      isLooping
-      resizeMode={ResizeMode.COVER}
-      onPlaybackStatusUpdate={status => setStatus(() => status)}
-    />
-  )
-};
-
-const PlayAudio = ({play, url}) => {
-  const playSound = useAudio();
-
-  useEffect(()=>{
-    play && playSound(url)
-  },[play])
-
-  return (<></>)
-};
-
-const BufetRunScreen = ({ difficulty }) => {
+const BufetRunScreen = ({ difficulty, setBestScore, bestScore }) => {
   const gameState = useGameState();
 
   const {gameEnd, scoreCount, setGameEnd, gameStarted, setGameStarted, setScoreCount, setGameSpeed, gameSpeed } = gameState;
@@ -69,6 +28,13 @@ const BufetRunScreen = ({ difficulty }) => {
     setScoreCount(0)
     setGameSpeed(1)
   },[difficulty])
+
+  useEffect(()=>{
+    gameEnd && scoreCount >  bestScore[difficulty] && setBestScore(prevState =>({
+      ...prevState,
+      [difficulty]: scoreCount
+    }))
+  },[gameEnd])
 
   if (gameEnd) {
     return (
@@ -99,16 +65,16 @@ const BufetRunScreen = ({ difficulty }) => {
 
     return (
       <View style={styles.container}>
-        <VideoBackground play={gameStarted} url={videos[difficulty]} rate={gameSpeed}/>
+        <VideoBackground play={gameStarted} url={videos[difficulty]} rate={gameSpeed} speed={videoSpeed[difficulty]}/>
         {gameStarted &&
           <PlayAudio play={gameStarted} url={sounds[difficulty]}/>
         }
         <Stats {...gameState}/>
         {gameStarted ?
           <View style={styles.imageContainer}>
-            <AnimatedImage gameState={gameState}/>
-            <AnimatedImage gameState={gameState} />
-            <AnimatedImage gameState={gameState} />
+            <AnimatedImage gameState={gameState} spawnTimeout={spawnTimeout[difficulty]} />
+            <AnimatedImage gameState={gameState} spawnTimeout={spawnTimeout[difficulty]} />
+            <AnimatedImage gameState={gameState} spawnTimeout={spawnTimeout[difficulty]} />
           </View>
           : 
           <TouchableWithoutFeedback onPress={()=> setGameStarted(true)}>

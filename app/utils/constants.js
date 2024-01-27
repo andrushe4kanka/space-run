@@ -35,7 +35,11 @@ export const gameImages = [
 export const images = {
     gameBackground: require('../../assets/images/game-background.jpg'),
     diarrheaBackground: require('../../assets/images/diarrhea-background.jpg'),
-    logo: require('../../assets/images/bufet_logo.png')
+    homeBackground: require('../../assets/images/home-background.jpg'),
+    logo: require('../../assets/images/bufet_logo.png'),
+    slow: require('../../assets/images/slow.png'),
+    middle: require('../../assets/images/middle.png'),
+    fast: require('../../assets/images/fast.png'),
 };
 
 export const sounds = {
@@ -47,7 +51,19 @@ export const sounds = {
 };
 
 export const videos = {
-    slow: require("../../assets/video/slow.mov"),
-    middle: require("../../assets/video/background-video.mp4"),
-    fast: require("../../assets/video/background-video.mp4"),
-}
+    slow: require("../../assets/video/slow.mp4"),
+    middle: require("../../assets/video/middle.mp4"),
+    fast: require("../../assets/video/fast.mp4"),
+};
+
+export const videoSpeed = {
+    slow: { initialSpeed: 1, step: 1.5 },
+    middle: { initialSpeed: 1, step: 1 },
+    fast: { initialSpeed: 1, step: 1 },
+};
+
+export const spawnTimeout = {
+    slow: { min: 1000, max: 2000, step: 0.1 },
+    middle: { min: 100, max: 2000, step: 0.2 },
+    fast: { min: 100, max: 1000, step: 0.3 },
+};
