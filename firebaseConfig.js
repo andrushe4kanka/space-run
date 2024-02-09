@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Initialize Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyB3fHutRwFwwzp2_UUeOEH06kQzeUg8c8w",
+    apiKey: process.env.EXPO_PUBLIC_API_KEY,
     authDomain: "space-run-9e906.firebaseapp.com",
     projectId: "space-run-9e906",
     storageBucket: "space-run-9e906.appspot.com",

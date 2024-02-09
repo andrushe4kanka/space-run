@@ -74,7 +74,7 @@ function BufetRunNavigator({setUser}) {
 };
 
 export default function App() {
-    const [user, setUser] = useState('treu');
+    const [user, setUser] = useState();
 
   return (
       <NavigationContainer>
