@@ -64,7 +64,24 @@ const ResetSection = ({setBestScore}) => (
   </View>
 );
 
-const HomeScreen = ({ setDifficulty, navigation, bestScore, setBestScore }) => {
+const Logout = ({setUser}) => (
+  <View style={styles.resetContainer}>
+    <Pressable 
+      onPress={()=> setUser(null)}
+      style={styles.button}
+    >
+      <Text style={styles.resetText}>Выйти</Text>
+    </Pressable>
+  </View>
+);
+
+const BottomSection = ({children}) => (
+  <View style={styles.bottomSection}>
+    {children}
+  </View>
+);
+
+const HomeScreen = ({ setDifficulty, navigation, bestScore, setBestScore, setUser }) => {
 
   return (
     <SafeAreaView style={styles.container}>
@@ -82,13 +99,21 @@ const HomeScreen = ({ setDifficulty, navigation, bestScore, setBestScore }) => {
           )}
           keyExtractor={item => item.id}
         />
-        <ResetSection setBestScore={setBestScore}/>
+        <BottomSection>
+          <ResetSection setBestScore={setBestScore}/>
+          <Logout setUser={()=>setUser(null)}/>
+        </BottomSection>
+
       </ImageBackground>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  bottomSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
   homeBackground: {
     flex: 1,
   },

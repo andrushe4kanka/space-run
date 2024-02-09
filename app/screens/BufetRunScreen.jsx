@@ -90,15 +90,6 @@ const BufetRunScreen = ({ difficulty, setBestScore, bestScore }) => {
 };
 
 const styles = StyleSheet.create({
-    backgroundVideo: {
-      height: height,
-      position: "absolute",
-      top: 0,
-      left: 0,
-      alignItems: "stretch",
-      bottom: 0,
-      right: 0
-    },
     container: {
       position: 'relative',
       flex: 1,

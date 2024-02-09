@@ -54,6 +54,8 @@ export const videos = {
     slow: require("../../assets/video/slow.mp4"),
     middle: require("../../assets/video/middle.mp4"),
     fast: require("../../assets/video/fast.mp4"),
+    authBackground: require("../../assets/video/auth-background-video.mp4"),
+    authBackground2: require("../../assets/video/auth-background-second.mp4"),
 };
 
 export const videoSpeed = {
